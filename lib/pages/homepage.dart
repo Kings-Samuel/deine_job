@@ -25,6 +25,40 @@ class HomepageState extends State<Homepage> with SingleTickerProviderStateMixin 
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
+        bottomNavigationBar: Device.screenType == ScreenType.mobile
+            ? Container(
+                height: 75,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [BoxShadow(color: Colors.black54, blurRadius: 5, spreadRadius: 5, offset: Offset(0, 5))],
+                    borderRadius: BorderRadius.only(topRight: Radius.circular(12), topLeft: Radius.circular(12))),
+                child: InkWell(
+                  onTap: () {
+                    _controller.animateTo(0, duration: const Duration(milliseconds: 1000), curve: Curves.bounceIn);
+                  },
+                  onHover: (value) {
+                    setState(() {
+                      _isHoveringMain = value;
+                    });
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 500),
+                    height: 45,
+                    width: 320,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        gradient: LinearGradient(
+                            colors: const [Color(0xff319795), Color(0xff3182CE)],
+                            begin: _isHoveringMain ? Alignment.topRight : Alignment.topLeft,
+                            end: _isHoveringMain ? Alignment.bottomLeft : Alignment.bottomRight)),
+                    child: Center(
+                      child: bodyText(text: 'Kostenlos Registrieren', color: Colors.white),
+                    ),
+                  ),
+                ),
+              )
+            : null,
         body: ImprovedScrolling(
           scrollController: _controller,
           enableMMBScrolling: true,
